@@ -19,6 +19,7 @@ class EnigmaTest < MiniTest::Test
   end
 
   def test_decrypt
+    skip
     expected = {decryption: "hello world",
                 key: "02715",
                 date: "040895"}
