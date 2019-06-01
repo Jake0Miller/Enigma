@@ -3,5 +3,8 @@ SimpleCov.start
 require 'pry'
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'minitest/stub_any_instance'
+require 'mocha/minitest'
 require 'csv'
 require './lib/enigma'
+require './lib/crypter'

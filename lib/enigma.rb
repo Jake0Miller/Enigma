@@ -1,16 +1,14 @@
-require 'date'
+require './lib/crypter'
+require './modules/date_maker'
 
 class Enigma
-  def initialize
+  include DateMaker
+
+  def encrypt(message, key = rand(99999).to_s.rjust(5,"0"), date = make_date)
+    Crypter.crypt(message, key, date, 1)
   end
 
-  def encrypt(message, key = rand(99999), date = Date.today)
-
-    return {encryption: message, key: key, date: date}
-  end
-
-  def decrypt(ciphertext, key, date = Date.today)
-    
-    return {decryption: ciphertext, key: key, date: date}
+  def decrypt(ciphertext, key, date = make_date)
+    Crypter.crypt(ciphertext, key, date, -1)
   end
 end
