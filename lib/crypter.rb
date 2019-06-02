@@ -1,23 +1,32 @@
-require './modules/shifter'
-
 class Crypter
-  extend Shifter
-  
-  @alphabet = ("a".."z").to_a << " "
+  def initialize(alphabet)
+    @alphabet = alphabet
+  end
 
-  def self.crypt(message, key, date, encrypt)
+  def encrypt(message, key, date)
+    {encryption: crypt(message, key, date, 1), key: key, date: date}
+  end
+
+  def decrypt(message, key, date)
+    {decryption: crypt(message, key, date, -1), key: key, date: date}
+  end
+
+  def crypt(message, key, date, enc_or_decrypt)
     shift = shifter(key, date)
     message.downcase.split('').each_with_index do |char,i|
       if char != ' '
-        message[i] = @alphabet[(char.ord-97 + encrypt*shift[i % 4]) % 27]
+        message[i] = @alphabet[(char.ord-97 + enc_or_decrypt*shift[i % 4]) % 27]
       else
-        message[i] = @alphabet[encrypt*shift[i % 4] % 27 - 1]
+        message[i] = @alphabet[enc_or_decrypt*shift[i % 4] % 27 - 1]
       end
     end
-    if encrypt > 0
-      {encryption: message, key: key, date: date}
-    else
-      {decryption: message, key: key, date: date}
+    message
+  end
+
+  def shifter(key, date)
+    date_shift = ((date.to_i)**2).to_s[-4..-1]
+    (0..3).each_with_object([]) do |num,arr|
+      arr << key[num..num+1].to_i + date_shift[num].to_i
     end
   end
 end
