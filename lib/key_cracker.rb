@@ -1,10 +1,10 @@
 class KeyCracker
-  def find_key(decryption, ciphertext, date)
-    keys = get_key_array(decryption, ciphertext, date)
-    gen_key(keys)
+  def self.find_key(decryption, ciphertext, date)
+    keys = self.get_key_array(decryption, ciphertext, date)
+    self.gen_key(keys)
   end
 
-  def get_key_array(decryption, ciphertext, date)
+  def self.get_key_array(decryption, ciphertext, date)
     date_shift = ((date.to_i)**2).to_s[-4..-1]
     ciphertext[0..3].split('').map.with_index do |char, i|
       if char == ' '
@@ -15,13 +15,13 @@ class KeyCracker
     end
   end
 
-  def gen_key(keys)
+  def self.gen_key(keys)
     keys[1..3].each_with_object((keys.first).to_s.rjust(2,"0")) do |key, str|
-      str << modify_key(key.to_s.rjust(2,"0"), key, str)
+      str << self.modify_key(key.to_s.rjust(2,"0"), key, str)
     end
   end
 
-  def modify_key(key_string, key, str)
+  def self.modify_key(key_string, key, str)
     if key_string[0] > str[-1]
       key_string = (key%27).to_s.rjust(2,"0")
     elsif key_string[0] < str[-1]

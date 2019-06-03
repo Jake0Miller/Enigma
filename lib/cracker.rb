@@ -12,8 +12,7 @@ class Cracker
 
   def crack(ciphertext, date = make_date)
     decryption = decrypt(ciphertext.reverse)
-    key_cracker = KeyCracker.new
-    key = key_cracker.find_key(decryption, ciphertext, date)
+    key = KeyCracker.find_key(decryption, ciphertext, date)
     {decryption: decryption, key: key, date: date}
   end
 
