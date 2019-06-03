@@ -6,7 +6,8 @@ class Cracker
 
   def crack(ciphertext, date)
     decryption = decrypt(ciphertext.reverse)
-    key = find_key(decryption, ciphertext, date)
+    key_cracker = KeyCracker.new(decryption, ciphertext, date)
+    key = key_cracker.find_key
     {decryption: decryption, key: key, date: date}
   end
 
@@ -33,12 +34,5 @@ class Cracker
     end
   end
 
-  def find_key(decryption, ciphertext, date)
-    date_shift = ((date.to_i)**2).to_s[-4..-1]
-    key = []
-    ciphertext[0..3].split('').each_with_index do |char, i|
-      key << char.ord - decryption[i].ord - date_shift[i].to_i
-    end
-    key
-  end
+
 end
