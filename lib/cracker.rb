@@ -11,7 +11,7 @@ class Cracker
     shift.reverse.each_with_index do |char, i|
       key << char - date_shift[i].to_i
     end
-    binding.pry
+    #binding.pry
     {decryption: decrypt(ciphertext, shift), key: key, date: date}
   end
 
