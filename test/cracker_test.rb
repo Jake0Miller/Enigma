@@ -22,6 +22,6 @@ class CrackerTest < MiniTest::Test
   end
 
   def test_shifter
-    assert_equal [18, -4, 12, 74], @cracker.shifter("vjqtbeaweqihssi")
+    assert_equal [5, 5, 14, 62], @cracker.shifter("vjqtbeaweqihssi".reverse)
   end
 end

@@ -12,7 +12,7 @@ class Cracker
     ciphertext[0..3].split('').each_with_index do |char, i|
       key << char.ord - @alphabet[i].ord
     end
-    #binding.pry
+    binding.pry
     {decryption: decryption, key: key, date: date}
   end
 
