@@ -33,6 +33,4 @@ class Cracker
       end
     end
   end
-
-
 end
