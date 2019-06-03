@@ -1,13 +1,17 @@
+require './modules/date_formatter'
+
 class Cracker
+  include DateFormatter
+
   def initialize(alphabet)
     @alphabet = alphabet
     @length = alphabet.length
   end
 
-  def crack(ciphertext, date)
+  def crack(ciphertext, date = make_date)
     decryption = decrypt(ciphertext.reverse)
-    key_cracker = KeyCracker.new(decryption, ciphertext, date)
-    key = key_cracker.find_key
+    key_cracker = KeyCracker.new
+    key = key_cracker.find_key(decryption, ciphertext, date)
     {decryption: decryption, key: key, date: date}
   end
 

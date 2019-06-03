@@ -35,4 +35,8 @@ class CrypterTest < MiniTest::Test
       assert_equal expected, actual
     end
   end
+
+  def test_get_new_char
+    assert_equal "b", @crypter.get_new_char("a", 1, 1)
+  end
 end
