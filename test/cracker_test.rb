@@ -10,7 +10,6 @@ class CrackerTest < MiniTest::Test
   end
 
   def test_crack
-    skip
     expected = {decryption: "hello world end",
                 key: "08304",
                 date: "291018"}
@@ -18,9 +17,11 @@ class CrackerTest < MiniTest::Test
   end
 
   def test_crack_without_date
-    skip
     Cracker.any_instance.stubs(:make_date).returns("040895")
-    assert_equal 0, @cracker.crack("vjqtbeaweqihssi")
+    expected = {decryption: "hello world end",
+                key: "13291",
+                date: "040895"}
+    assert_equal expected, @cracker.crack("vjqtbeaweqihssi")
   end
 
   def test_decrypt
@@ -29,6 +30,6 @@ class CrackerTest < MiniTest::Test
   end
 
   def test_shifter
-    assert_equal [5, 5, 14, 62], @cracker.shifter("vjqtbeaweqihssi".reverse)
+    assert_equal [5, 5, 14, 89], @cracker.shifter("vjqtbeaweqihssi".reverse)
   end
 end
