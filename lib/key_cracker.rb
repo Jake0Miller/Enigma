@@ -7,25 +7,29 @@ class KeyCracker
   def get_key_array(decryption, ciphertext, date)
     date_shift = ((date.to_i)**2).to_s[-4..-1]
     ciphertext[0..3].split('').map.with_index do |char, i|
-      char.ord - decryption[i].ord - date_shift[i].to_i
+      if char == ' '
+        (char.ord - decryption[i].ord - 17 - date_shift[i].to_i) % 27
+      else
+        (char.ord - decryption[i].ord - date_shift[i].to_i) % 27
+      end
     end
   end
 
   def gen_key(keys)
-    keys[1..3].each_with_object(keys.first.to_s.rjust(2,"0")) do |key, str|
-      str << modify_key(key.to_s.rjust(2,"0"), key, str)[-1]
+    keys[1..3].each_with_object((keys.first).to_s.rjust(2,"0")) do |key, str|
+      str << modify_key(key.to_s.rjust(2,"0"), key, str)
     end
   end
 
   def modify_key(key_string, key, str)
-    until key_string[0] == str[-1]
-      if key_string[0] < str[-1]
+    if key_string[0] > str[-1]
+      key_string = (key%27).to_s.rjust(2,"0")
+    elsif key_string[0] < str[-1]
+      until key_string[0] == str[-1]
         key += 27
         key_string = key.to_s.rjust(2,"0")
-      else
-        key_string = (key%27).to_s.rjust(2,"0")
       end
     end
-    key_string
+    key_string[-1]
   end
 end

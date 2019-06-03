@@ -20,6 +20,6 @@ class KeyCrackerTest < Minitest::Test
   end
 
   def test_modify_key
-    assert_equal "83", @cracker.modify_key("02",2,"08")
+    assert_equal "3", @cracker.modify_key("02",2,"08")
   end
 end

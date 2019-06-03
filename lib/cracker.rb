@@ -27,7 +27,7 @@ class Cracker
   def shifter(ciphertext)
     "dne ".split('').map.with_index do |char, i|
       if char == ' '
-        (ciphertext[i].ord - char.ord - 10)
+        (ciphertext[i].ord - char.ord + 17)
       else
         (ciphertext[i].ord - char.ord)
       end
