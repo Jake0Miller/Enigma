@@ -1,7 +1,9 @@
 require './modules/date_formatter'
+require './modules/get_new_char'
 
 class Cracker
   include DateFormatter
+  include GetNewChar
 
   def initialize(alphabet)
     @alphabet = alphabet
@@ -18,13 +20,7 @@ class Cracker
   def decrypt(ciphertext)
     shift = shifter(ciphertext)
     ciphertext.downcase.split('').map.with_index do |char,i|
-      if !@alphabet.include?(char)
-        char
-      elsif char != ' '
-        @alphabet[(char.ord-97 + -1*shift[i % 4]) % @length]
-      else
-        @alphabet[-1*shift[i % 4] % @length - 1]
-      end
+      get_new_char(char, shift[i % 4], -1)
     end.join.reverse
   end
 
