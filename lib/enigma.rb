@@ -1,3 +1,4 @@
+require 'date'
 require './lib/crypter'
 require './lib/cracker'
 
