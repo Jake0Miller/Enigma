@@ -5,7 +5,7 @@ require './modules/date_formatter'
 class Enigma
   include DateFormatter
 
-  def encrypt(message, key = rand(99999).to_s.rjust(5,"0"), date = make_date)
+  def encrypt(message, key = key_generator, date = make_date)
     crypter = Crypter.new(("a".."z").to_a << " ")
     crypter.encrypt(message, key, date)
   end
@@ -18,5 +18,9 @@ class Enigma
   def crack(ciphertext, date = make_date)
     cracker = Cracker.new(("a".."z").to_a << " ")
     cracker.crack(ciphertext, date)
+  end
+
+  def key_generator
+    rand(99999).to_s.rjust(5,"0")
   end
 end
