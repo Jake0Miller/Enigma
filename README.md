@@ -2,7 +2,7 @@
 
 # Functionality - 4
 
-Everything works and is pretty well tested. Special characters and such work. Crack works. CLI works. I did find that five-digit keys are not unique--there's more than one that cracks a message. So they don't always match
+Everything works and is pretty well tested. Special characters and such work. Crack works. CLI works. So they don't always match
 
 # OOP - 4
 
