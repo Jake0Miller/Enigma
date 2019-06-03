@@ -67,10 +67,9 @@ class EnigmaTest < MiniTest::Test
   end
 
   def test_crack
-    skip
     Enigma.any_instance.stubs(:make_date).returns("040895")
     expected = {decryption: "hello world end",
-                key: "02715",
+                key: "13291",
                 date: "040895"}
     assert_equal expected, @enigma.crack("vjqtbeaweqihssi")
   end
