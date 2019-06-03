@@ -5,14 +5,15 @@ class Cracker
   end
 
   def crack(ciphertext, date)
-    shift = shifter(ciphertext)
+    shift = shifter(ciphertext.reverse)
     date_shift = ((date.to_i)**2).to_s[-4..-1]
+    decryption = decrypt(ciphertext.reverse, shift)
     key = []
-    shift.reverse.each_with_index do |char, i|
-      key << char - date_shift[i].to_i
+    ciphertext[0..3].split('').each_with_index do |char, i|
+      key << char.ord - @alphabet[i].ord
     end
     #binding.pry
-    {decryption: decrypt(ciphertext, shift), key: key, date: date}
+    {decryption: decryption, key: key, date: date}
   end
 
   def decrypt(ciphertext, shift)
