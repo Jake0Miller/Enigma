@@ -1,4 +1,8 @@
+require './modules/get_new_char.rb'
+
 class Crypter
+  include GetNewChar
+
   def initialize(alphabet)
     @alphabet = alphabet
     @length = alphabet.length
@@ -17,16 +21,6 @@ class Crypter
     message.downcase.split('').map.with_index do |char,i|
       get_new_char(char, shift[i % 4], enc_or_decrypt)
     end.join
-  end
-
-  def get_new_char(char, i, enc_or_decrypt)
-    if !@alphabet.include?(char)
-      char
-    elsif char != ' '
-      @alphabet[(char.ord-97 + enc_or_decrypt*i) % @length]
-    else
-      @alphabet[(enc_or_decrypt*i) % @length - 1]
-    end
   end
 
   def shifter(key, date)
