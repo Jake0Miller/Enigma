@@ -15,7 +15,7 @@ class Enigma
 
   def crack(ciphertext, date = make_date)
     cracker = Cracker.new(("a".."z").to_a << " ")
-    cracker.crack(ciphertext.reverse, date)
+    cracker.crack(ciphertext, date)
   end
 
   def make_date
