@@ -15,7 +15,9 @@ class Crypter
   def crypt(message, key, date, enc_or_decrypt)
     shift = shifter(key, date)
     message.downcase.split('').map.with_index do |char,i|
-      if char != ' '
+      if !@alphabet.include?(char)
+        char
+      elsif char != ' '
         @alphabet[(char.ord-97 + enc_or_decrypt*shift[i % 4]) % @length]
       else
         @alphabet[enc_or_decrypt*shift[i % 4] % @length - 1]
