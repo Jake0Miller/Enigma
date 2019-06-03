@@ -10,3 +10,7 @@ class KeyCrackerTest < Minitest::Test
     assert_equal [8, 2, 3, 4], actual
   end
 end
+
+#date_shift 6 3 2 4
+#final_shift 14 5 5 8
+#pre_shift 8 2 3 4
