@@ -17,7 +17,9 @@ class Cracker
 
   def decrypt(ciphertext, shift)
     ciphertext.downcase.split('').map.with_index do |char,i|
-      if char != ' '
+      if !@alphabet.include?(char)
+        char
+      elsif char != ' '
         @alphabet[(char.ord-97 + -1*shift[i % 4]) % @length]
       else
         @alphabet[-1*shift[i % 4] % @length - 1]
