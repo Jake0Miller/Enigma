@@ -28,4 +28,9 @@ class CrackerTest < MiniTest::Test
   def test_shifter
     assert_equal [5, 5, 14, 62], @cracker.shifter("vjqtbeaweqihssi".reverse)
   end
+
+  def test_find_key
+    actual = @cracker.find_key("hello world end", "vjqtbeaweqihssi", "291018")
+    assert_equal [8, 2, 3, 4], actual
+  end
 end
