@@ -1,8 +1,11 @@
 require './test/test_helper'
+require './modules/alphabet_generator'
 
 class CrackerTest < MiniTest::Test
+  include AlphabetGenerator
+
   def setup
-    @cracker = Cracker.new(("a".."z").to_a << " ")
+    @cracker = Cracker.new(alphabet_generator)
   end
 
   def test_it_exists

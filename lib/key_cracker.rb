@@ -2,7 +2,6 @@ class KeyCracker
   def self.find_key(decryption, cipher, date)
     date_shift = ((date.to_i)**2).to_s[-4..-1]
     keys = self.get_key_array(decryption, cipher, date_shift)
-    #require 'pry'; binding.pry
     self.gen_key(keys)
   end
 

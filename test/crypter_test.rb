@@ -1,8 +1,11 @@
 require './test/test_helper'
+require './modules/alphabet_generator'
 
 class CrypterTest < MiniTest::Test
+  include AlphabetGenerator
+
   def setup
-    @crypter = Crypter.new(("a".."z").to_a << " ")
+    @crypter = Crypter.new(alphabet_generator)
   end
 
   def test_it_exists
