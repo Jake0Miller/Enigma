@@ -5,6 +5,7 @@ class Crypter
 
   def initialize(alphabet)
     @alphabet = alphabet
+    @rev = alphabet.invert
     @length = alphabet.length
   end
 

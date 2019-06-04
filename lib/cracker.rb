@@ -7,13 +7,14 @@ class Cracker
 
   def initialize(alphabet)
     @alphabet = alphabet
+    @rev = alphabet.invert
     @length = alphabet.length
   end
 
-  def crack(ciphertext, date = make_date)
-    decryption = decrypt_message(ciphertext.reverse)
-    key = KeyCracker.find_key(cipher_chars(decryption), cipher_chars(ciphertext), date)
-    {decryption: decryption, key: key, date: date}
+  def crack(cipher, date = make_date)
+    decrypt = decrypt_message(cipher.reverse)
+    key = KeyCracker.find_key(cipher_chars(decrypt), cipher_chars(cipher), date)
+    {decryption: decrypt, key: key, date: date}
   end
 
   def decrypt_message(cipher)
@@ -30,11 +31,7 @@ class Cracker
     "dne ".split('').map do |char|
       i += 1 until @alphabet.values.include?(cipher[i])
       i += 1
-      if char == ' '
-        (cipher[i-1].ord - char.ord + 17) % 27
-      else
-        (cipher[i-1].ord - char.ord) % 27
-      end
+      (@rev[cipher[i-1]] - @rev[char]) % @length
     end
   end
 
