@@ -1,35 +1,56 @@
+require './modules/alphabet_generator'
+
 class KeyCracker
-  def find_key(decryption, ciphertext, date)
-    keys = get_key_array(decryption, ciphertext, date)
-    gen_key(keys)
-  end
+  extend AlphabetGenerator
 
-  def get_key_array(decryption, ciphertext, date)
+  @alphabet = alphabet_generator
+  @rev = @alphabet.invert
+  @length = @alphabet.length
+
+  def self.find_key(decryption, cipher, date)
     date_shift = ((date.to_i)**2).to_s[-4..-1]
-    ciphertext[0..3].split('').map.with_index do |char, i|
-      if char == ' '
-        (char.ord - decryption[i].ord - 17 - date_shift[i].to_i) % 27
-      else
-        (char.ord - decryption[i].ord - date_shift[i].to_i) % 27
+    keys = self.get_key_array(decryption, cipher, date_shift)
+    self.gen_key(keys)
+  end
+
+  def self.get_key_array(decryption, cipher, date_shift)
+    cipher[0..3].map.with_index do |char, i|
+      (@rev[char] - @rev[decryption[i]] - date_shift[i].to_i) % @length
+    end
+  end
+
+  def self.gen_key(keys)
+    keys = self.make_key_arrays(keys)
+    keys = self.reduce_keys(keys)
+    keys[1..3].each_with_object(keys.first.sample) do |key_arr,str|
+      str << key_arr.find {|key| key[0] == str[-1]}[-1]
+    end
+  end
+
+  def self.make_key_arrays(keys)
+    keys.map do |key|
+      (0..4).each_with_object([]) do |num, arr|
+        this_num = key + num * @length
+        arr << this_num.to_s.rjust(2,"0") if this_num < 100
       end
     end
   end
 
-  def gen_key(keys)
-    keys[1..3].each_with_object((keys.first).to_s.rjust(2,"0")) do |key, str|
-      str << modify_key(key.to_s.rjust(2,"0"), key, str)
+  def self.reduce_keys(keys)
+    keys[1] = keys[1].map.find_all do |key_a|
+      keys[2].any?{|key| key[0] == key_a[1]} &&
+      keys[0].any?{|key| key[1] == key_a[0]}
     end
-  end
-
-  def modify_key(key_string, key, str)
-    if key_string[0] > str[-1]
-      key_string = (key%27).to_s.rjust(2,"0")
-    elsif key_string[0] < str[-1]
-      until key_string[0] == str[-1]
-        key += 27
-        key_string = key.to_s.rjust(2,"0")
-      end
+    keys[2] = keys[2].map.find_all do |key_a|
+      keys[3].any?{|key| key[0] == key_a[1]} &&
+      keys[1].any?{|key| key[1] == key_a[0]}
     end
-    key_string[-1]
+    keys[0] = keys[0].map.find_all do |key_a|
+      keys[1].any? {|key_b| key_b[0] == key_a[1]}
+    end
+    keys[3] = keys[3].map.find_all do |key_a|
+      keys[2].any? {|key_b| key_b[1] == key_a[0]}
+    end
+    keys
   end
 end

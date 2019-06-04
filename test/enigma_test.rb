@@ -14,11 +14,15 @@ class EnigmaTest < MiniTest::Test
   end
 
   def test_encrypt
-    expected = {encryption: "keder ohulw!",
+    expected = {encryption: "!keder ohulw!",
                 key: "02715",
                 date: "040895"}
-    actual = @enigma.encrypt("hello world!", "02715", "040895")
+    actual = @enigma.encrypt("!hello world!", "02715", "040895")
 
+    assert_equal expected, actual
+
+    expected = "!vjp be ceqhossh"
+    actual = @enigma.encrypt("!hello world end", "13291", "040895")[:encryption]
     assert_equal expected, actual
   end
 
@@ -68,9 +72,22 @@ class EnigmaTest < MiniTest::Test
 
   def test_crack
     Enigma.any_instance.stubs(:make_date).returns("040895")
-    expected = {decryption: "hello world end",
-                key: "13291",
-                date: "040895"}
-    assert_equal expected, @enigma.crack("vjqtbeaweqihssi")
+    actual = @enigma.crack("vjp be ceqhossh")
+    assert_equal "hello world end", actual[:decryption]
+    assert ["13291", "40564"].include?(actual[:key])
+    assert_equal "040895", actual[:date]
+  end
+
+  def test_alphabet_generator
+    expected = {0 => "a", 1 => "b", 2 => "c", 3=>"d", 4=>"e",
+                5=>"f", 6=>"g", 7=>"h", 8=>"i", 9=>"j", 10=>"k",
+                11=>"l", 12=>"m", 13=>"n", 14=>"o", 15=>"p", 16=>"q",
+                17=>"r", 18=>"s", 19=>"t", 20=>"u", 21=>"v", 22=>"w",
+                23=>"x", 24=>"y", 25=>"z", 26=>" "}
+    assert_equal expected, @enigma.alphabet_generator
+  end
+
+  def test_key_generator
+    assert_equal 5, @enigma.key_generator.length
   end
 end
