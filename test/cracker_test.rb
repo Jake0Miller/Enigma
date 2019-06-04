@@ -21,10 +21,10 @@ class CrackerTest < MiniTest::Test
 
   def test_crack_without_date
     Cracker.any_instance.stubs(:make_date).returns("040895")
-    expected = {decryption: "!hello world end",
-                key: "13291",
-                date: "040895"}
-    assert_equal expected, @cracker.crack("!vjqtbeaweqihssi")
+    actual = @cracker.crack("!vjp be ceqhossh")
+    assert_equal "!hello world end", actual[:decryption]
+    assert_equal "040895", actual[:date]
+    assert ["13291", "40564"].include?(actual[:key])
   end
 
   def test_decrypt_message

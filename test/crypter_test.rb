@@ -30,13 +30,11 @@ class CrypterTest < MiniTest::Test
   end
 
   def test_decrypt
-    def test_decrypt
-      expected = {decryption: "hello world",
-                  key: "02715",
-                  date: "040895"}
-      actual = @crypter.decrypt("keder ohulw", "02715", "040895")
-      assert_equal expected, actual
-    end
+    expected = {decryption: "hello world",
+                key: "02715",
+                date: "040895"}
+    actual = @crypter.decrypt("keder ohulw", "02715", "040895")
+    assert_equal expected, actual
   end
 
   def test_get_new_char

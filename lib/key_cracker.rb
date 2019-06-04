@@ -20,31 +20,37 @@ class KeyCracker
   end
 
   def self.gen_key(keys)
-    keys = keys.map do |key|
-      (0..4).each_with_object([]) do |num, arr|
-        this_num = key + num * @length
-        arr << this_num.to_s.rjust(2,"0") if this_num < 100
-      end
-    end
-
-    keys = self.reduce_keys(keys)
+    keys = self.make_key_arrays(keys)
     keys = self.reduce_keys(keys)
     keys[1..3].each_with_object(keys.first.sample) do |key_arr,str|
       str << key_arr.find {|key| key[0] == str[-1]}[-1]
     end
   end
 
-  def self.reduce_keys(keys)
-    keys.map.with_index do |key_arr,i|
-      if i < 3
-        key_arr.find_all do |key|
-          keys[i+1].map{|key| key[0]}.include?(key[-1])
-        end
-      else
-        key_arr.find_all do |key|
-          keys[i-1].map{|key| key[-1]}.include?(key[0])
-        end
+  def self.make_key_arrays(keys)
+    keys.map do |key|
+      (0..4).each_with_object([]) do |num, arr|
+        this_num = key + num * @length
+        arr << this_num.to_s.rjust(2,"0") if this_num < 100
       end
     end
+  end
+
+  def self.reduce_keys(keys)
+    keys[1] = keys[1].map.find_all do |key_a|
+      keys[2].any?{|key| key[0] == key_a[1]} &&
+      keys[0].any?{|key| key[1] == key_a[0]}
+    end
+    keys[2] = keys[2].map.find_all do |key_a|
+      keys[3].any?{|key| key[0] == key_a[1]} &&
+      keys[1].any?{|key| key[1] == key_a[0]}
+    end
+    keys[0] = keys[0].map.find_all do |key_a|
+      keys[1].any? {|key_b| key_b[0] == key_a[1]}
+    end
+    keys[3] = keys[3].map.find_all do |key_a|
+      keys[2].any? {|key_b| key_b[1] == key_a[0]}
+    end
+    keys
   end
 end
