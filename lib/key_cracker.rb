@@ -23,37 +23,28 @@ class KeyCracker
     keys = keys.map do |key|
       (0..4).each_with_object([]) do |num, arr|
         this_num = key + num * @length
-        arr << this_num if this_num < 100
+        arr << this_num.to_s.rjust(2,"0") if this_num < 100
       end
     end
 
-    
-    # require 'pry'; binding.pry
-    # until ans.length == 5
-    #   ans = keys.first.to_s.rjust(2,"0")
-    #   keys[1..3].each do |key|
-    #     while key[0] != ans[-1]
-    #       key += 27
-    #       if key > 99
-    #         ans = ""
-    #       end
-    #     end
-    #   end
-    # end
-    # keys[1..3].each_with_object(keys.first.to_s.rjust(2,"0")) do |key, str|
-    #   str << self.modify_key(key.to_s.rjust(2,"0"), key, str)
-    # end
+    keys = self.reduce_keys(keys)
+    keys = self.reduce_keys(keys)
+    keys[1..3].each_with_object(keys.first.sample) do |key_arr,str|
+      str << key_arr.find {|key| key[0] == str[-1]}[-1]
+    end
   end
 
-  def self.modify_key(key_string, key, str)
-    if key_string[0] > str[-1]
-      key_string = (key%27).to_s.rjust(2,"0")
-    elsif key_string[0] < str[-1]
-      until key_string[0] == str[-1]
-        key += 27
-        key_string = key.to_s.rjust(2,"0")
+  def self.reduce_keys(keys)
+    keys.map.with_index do |key_arr,i|
+      if i < 3
+        key_arr.find_all do |key|
+          keys[i+1].map{|key| key[0]}.include?(key[-1])
+        end
+      else
+        key_arr.find_all do |key|
+          keys[i-1].map{|key| key[-1]}.include?(key[0])
+        end
       end
     end
-    key_string[-1]
   end
 end
