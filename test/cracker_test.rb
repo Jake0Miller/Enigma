@@ -24,12 +24,12 @@ class CrackerTest < MiniTest::Test
     assert_equal expected, @cracker.crack("vjqtbeaweqihssi")
   end
 
-  def test_decrypt
-    actual = @cracker.decrypt("vjqtbeaweqihssi".reverse)
-    assert_equal "hello world end", actual
+  def test_decrypt_message
+    actual = @cracker.decrypt_message("vjqtbeaweqihssi!".reverse)
+    assert_equal "hello world end!", actual
   end
 
   def test_shifter
-    assert_equal [5, 5, 14, 89], @cracker.shifter("vjqtbeaweqihssi".reverse)
+    assert_equal [5, 5, 14, 8], @cracker.shifter("vjqtbeaweqihssi!".reverse)
   end
 end
