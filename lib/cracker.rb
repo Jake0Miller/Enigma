@@ -12,7 +12,7 @@ class Cracker
 
   def crack(ciphertext, date = make_date)
     decryption = decrypt_message(ciphertext.reverse)
-    key = KeyCracker.find_key(decryption, ciphertext, date)
+    key = KeyCracker.find_key(cipher_chars(decryption), cipher_chars(ciphertext), date)
     {decryption: decryption, key: key, date: date}
   end
 
@@ -36,5 +36,9 @@ class Cracker
         (cipher[i-1].ord - char.ord) % 27
       end
     end
+  end
+
+  def cipher_chars(cipher)
+    cipher.split('').find_all {|ch| @alphabet.include? ch}
   end
 end

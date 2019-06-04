@@ -18,8 +18,10 @@ class Crypter
 
   def crypt(message, key, date, enc_or_decrypt)
     shift = shifter(key, date)
-    message.downcase.split('').map.with_index do |char,i|
-      get_new_char(char, shift[i % 4], enc_or_decrypt)
+    i = 0
+    message.downcase.split('').map do |char|
+      i += 1 if @alphabet.include?(char)
+      get_new_char(char, shift[(i-1) % 4], enc_or_decrypt)
     end.join
   end
 

@@ -19,10 +19,10 @@ class CrypterTest < MiniTest::Test
   end
 
   def test_encrypt
-    expected = {encryption: "keder ohulw",
+    expected = {encryption: "!keder ohulw!",
                 key: "02715",
                 date: "040895"}
-    actual = @crypter.encrypt("hello world", "02715", "040895")
+    actual = @crypter.encrypt("!hello world!", "02715", "040895")
     assert_equal expected, actual
   end
 

@@ -1,12 +1,13 @@
 class KeyCracker
-  def self.find_key(decryption, ciphertext, date)
-    keys = self.get_key_array(decryption, ciphertext, date)
+  def self.find_key(decryption, cipher, date)
+    date_shift = ((date.to_i)**2).to_s[-4..-1]
+    keys = self.get_key_array(decryption, cipher, date_shift)
+    #require 'pry'; binding.pry
     self.gen_key(keys)
   end
 
-  def self.get_key_array(decryption, ciphertext, date)
-    date_shift = ((date.to_i)**2).to_s[-4..-1]
-    ciphertext[0..3].split('').map.with_index do |char, i|
+  def self.get_key_array(decryption, cipher, date_shift)
+    cipher[0..3].map.with_index do |char, i|
       if char == ' '
         (char.ord - decryption[i].ord - 17 - date_shift[i].to_i) % 27
       else
