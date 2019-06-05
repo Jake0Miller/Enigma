@@ -1,11 +1,8 @@
 require './test/test_helper'
-require './modules/alphabet_generator'
 
 class CrackerTest < MiniTest::Test
-  include AlphabetGenerator
-
   def setup
-    @cracker = Cracker.new(alphabet_generator)
+    @cracker = Cracker.new
   end
 
   def test_it_exists
