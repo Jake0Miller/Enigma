@@ -1,23 +1,25 @@
 require './lib/crypter'
 require './lib/cracker'
+require './lib/constants'
 require './modules/date_formatter'
-require './modules/alphabet_generator'
+
+ENCRYPT = 1
+DECRYPT = -1
 
 class Enigma
   include DateFormatter
-  include AlphabetGenerator
 
   def initialize
-    @crypter = Crypter.new(alphabet_generator)
-    @cracker = Cracker.new(alphabet_generator)
+    @crypter = Crypter.new
+    @cracker = Cracker.new
   end
 
   def encrypt(message, key = key_generator, date = make_date)
-    @crypter.encrypt(message, key, date)
+    {encryption: @crypter.crypt(message, key, date, ENCRYPT), key: key, date: date}
   end
 
   def decrypt(ciphertext, key, date = make_date)
-    @crypter.decrypt(ciphertext, key, date)
+    {decryption: @crypter.crypt(ciphertext, key, date, DECRYPT), key: key, date: date}
   end
 
   def crack(ciphertext, date = make_date)
